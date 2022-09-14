@@ -1,18 +1,37 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+}
+
+nav {
+    background-color: #222222;
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: #303234;
+    margin-bottom: 60px;
+}
+
+.navbar-brand {
+    font-size: 1.40rem;
+}
+
+#nav-link:hover {
+    color: aqua;
+    font-size: 1.10rem;
+}
+
+#nav-link {
+    margin-right: 1rem;
+    transition: font-size .15s ease;
 }
