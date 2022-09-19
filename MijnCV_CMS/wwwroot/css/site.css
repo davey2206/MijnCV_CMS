@@ -35,3 +35,6 @@ body {
     margin-right: 1rem;
     transition: font-size .15s ease;
 }
+h1,h2,h3,h4,h5,p{
+    color:white;
+}
