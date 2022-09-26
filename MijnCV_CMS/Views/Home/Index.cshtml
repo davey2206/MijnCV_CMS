@@ -3,14 +3,15 @@
 }
 
 <div class="mb-2 d-flex justify-content-between">
-    <h1>Staring page</h1>
-    <a style="align-self: center;" class="btn btn-primary" asp-action="add" asp-controller="home">Add</a>
+    <h1>Sections</h1>
+    <a style="align-self: center;" class="btn btn-primary" data-toggle="modal" data-target="#PageSelect">Add</a>
 </div>
 <div>
     <table class="table table-dark">
         <thead>
              <tr>
                 <th>Title</th>
+                <th>Page</th>
                 <th style="width: 10em;">Layout</th>
                 <th style="width: 12em;">Actions</th>
             </tr>
@@ -18,6 +19,7 @@
         <tbody>
             <tr>
                 <td>test</td>
+                <td>Main</td>
                 <td>1</td>
                 <td>
                     <a class="btn btn-primary">Edit</a>
@@ -26,4 +28,26 @@
             </tr>
         </tbody>
     </table>
+</div>
+
+<div class="modal fade" id="PageSelect" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Page</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <select>
+                    <option>Main</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" asp-action="add" asp-controller="home">Select</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
 </div>

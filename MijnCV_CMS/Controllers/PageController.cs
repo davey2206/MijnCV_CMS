@@ -2,7 +2,7 @@
 
 namespace MijnCV_CMS.Controllers
 {
-    public class SchoolingController : Controller
+    public class PageController : Controller
     {
         public IActionResult Index()
         {
