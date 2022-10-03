@@ -17,15 +17,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>test</td>
-                <td>Main</td>
-                <td>1</td>
-                <td>
-                    <a class="btn btn-primary">Edit</a>
-                    <a class="btn btn-primary">Delete</a>
-                </td>
-            </tr>
+            @foreach (var Section in ViewData["Sections"] as List<Section>)
+            {
+                <tr>
+                    <td>@Section.Title</td>
+                    <td>@Section.PageID</td>
+                    <td>@Section.Layout</td>
+                    <td>
+                        <a class="btn btn-primary">Edit</a>
+                        <a class="btn btn-primary">Delete</a>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
@@ -46,7 +49,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" asp-action="add" asp-controller="home">Select</button>
+                <a class="btn btn-primary" asp-controller="home" asp-action="add">Select</a>
             </div>
         </div>
     </div>

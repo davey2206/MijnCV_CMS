@@ -3,11 +3,11 @@
 }
 
 <div>
-    <form>
+    <form asp-action="Add" asp-controller="Home" method="post">
         <div class="row">
             <div class="form-group col-md-6">
                   <label for="Title" class="form-label">Title</label>
-                  <input name="CV" type="text" class="form-control" id="Title" placeholder="Title">
+                  <input name="Title" type="text" class="form-control" id="Title" placeholder="Title">
             </div>
             <div class="custom-file col-md-6">
                 <label for="formFile" class="form-label">Image</label>
@@ -30,6 +30,7 @@
             </div>
         </div>
         <input type="hidden" name="Layout" value="1"/>
-        <input type="hidden" name="Page" value="1"/>
+        <input type="hidden" name="PageID" value="1"/>
+        <input type="hidden" name="CV" value="test" />
     </form>
 </div>
