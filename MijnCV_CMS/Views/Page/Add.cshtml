@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Add Page";
+}
+<div>
+    <form asp-action="Add" asp-controller="Page" method="post">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="Name">Page Name</label>
+                <input name="Name" type="text" class="form-control" id="Name" />
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary float-end">Submit</button>
+            </div>
+        </div>
+        <input type="hidden" name="UserID" value="1" />
+    </form>
+</div>

@@ -26,11 +26,19 @@
                 <input name="Position" type="number" class="form-control" id="position"/>
             </div>
             <div class="col-md-6">
-                <button type="submit" class="btn btn-primary mt-4 float-end">Submit</button>
+                <label for="Page">Page</label>
+                <select name="PageID" id="Page" class="form-control">
+                    @foreach (var Page in ViewData["Pages"] as List<Page>)
+                    {
+                        <option value="@Page.Id">@Page.Name</option>
+                    }
+                </select>
             </div>
         </div>
+        <div>
+            <button type="submit" class="btn btn-primary float-end">Submit</button>
+        </div>
         <input type="hidden" name="Layout" value="1"/>
-        <input type="hidden" name="PageID" value="1"/>
         <input type="hidden" name="CV" value="test" />
     </form>
 </div>
