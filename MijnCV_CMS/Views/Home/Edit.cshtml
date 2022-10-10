@@ -1,29 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Add page";
+    ViewData["Title"] = "Edit Page";
 }
 
 <div>
-    <form asp-action="Add" asp-controller="Home" method="post">
+    <form asp-action="Edit" asp-controller="Home" method="post">
         <div class="row">
             <div class="form-group col-md-6">
                   <label for="Title" class="form-label">Title</label>
-                  <input name="Title" type="text" class="form-control" id="Title" placeholder="Title">
+                  <input name="Title" type="text" class="form-control" id="Title" placeholder="Title" value="@ViewBag.section.Title">
             </div>
             <div class="custom-file col-md-6">
                 <label for="formFile" class="form-label">Image</label>
-                <input name="Image" class="form-control" type="file" id="formFile">
+                <input name="Image" class="form-control" type="file" id="formFile" value="@ViewBag.section.Image">
             </div>
         </div>
         <div class="mt-3">
             <div class="form-group">
                 <label for="paragraph">paragraph</label>
-                <textarea name="Paragraph" class="form-control" id="paragraph" rows="5"></textarea>
+                <textarea name="Paragraph" class="form-control" id="paragraph" rows="5">@ViewBag.section.Paragraph</textarea>
             </div>
         </div>
         <div class="row mt-3">
             <div class="form-group col-md-6">
                 <label for="position">Position on page</label>
-                <input name="Position" type="number" class="form-control" id="position"/>
+                <input name="Position" type="number" class="form-control" id="position" value="@ViewBag.section.Position"/>
             </div>
             <div class="col-md-6">
                 <label for="Page">Page</label>
@@ -38,7 +38,8 @@
         <div>
             <button type="submit" class="btn btn-primary float-end">Submit</button>
         </div>
-        <input type="hidden" name="Layout" value="1"/>
-        <input type="hidden" name="CV" value="test" />
+        <input type="hidden" name="Layout" value="@ViewBag.section.Layout"/>
+        <input type="hidden" name="CV" value="@ViewBag.section.CV" />
+        <input type="hidden" name="ID" value="@ViewBag.section.ID" />
     </form>
 </div>

@@ -69,5 +69,42 @@ namespace MijnCV_CMS.Controllers
 
             return RedirectToAction("Index", "Page");
         }
+
+        public async Task<IActionResult> EditAsync(string id)
+        {
+            Page page = new Page();
+            try
+            {
+                var httpClient = new HttpClient();
+                var response = await httpClient.GetAsync("https://localhost:7059/api/Pages/" + id);
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                page = JsonConvert.DeserializeObject<Page>(apiResponse);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Offline", "Error");
+            }
+            ViewBag.Page = page;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAsync([Bind("Id,Name,UserID")] Page page)
+        {
+            try
+            {
+                var httpClient = new HttpClient();
+                StringContent content = new StringContent(JsonConvert.SerializeObject(page), Encoding.UTF8, "application/json");
+                var response = await httpClient.PutAsync("https://localhost:7059/api/Pages/" + page.Id, content);
+                string apiResponse = await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return RedirectToAction("Index", "Page");
+        }
     }
 }

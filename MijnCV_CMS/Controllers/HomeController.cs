@@ -95,5 +95,48 @@ namespace MijnCV_CMS.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        public async Task<IActionResult> EditAsync(string id)
+        {
+            Section section = new Section();
+            List<Page> pages = new List<Page>();
+            try
+            {
+                var httpClient = new HttpClient();
+                var response = await httpClient.GetAsync("https://localhost:7059/api/Sections/" + id);
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                section = JsonConvert.DeserializeObject<Section>(apiResponse);
+
+                response = await httpClient.GetAsync("https://localhost:7059/api/Pages");
+                apiResponse = await response.Content.ReadAsStringAsync();
+                pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Offline", "Error");
+            }
+            ViewBag.section = section;
+            ViewData["Pages"] = pages;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditAsync([Bind("ID,CV,Title,Paragraph,Image,Layout,Position,PageID")] Section section)
+        {
+            try
+            {
+                var httpClient = new HttpClient();
+                StringContent content = new StringContent(JsonConvert.SerializeObject(section), Encoding.UTF8, "application/json");
+                var response = await httpClient.PutAsync("https://localhost:7059/api/Sections/" + section.ID, content);
+                string apiResponse = await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

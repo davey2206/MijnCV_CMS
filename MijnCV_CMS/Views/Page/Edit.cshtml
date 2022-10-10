@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Edit page";
+}
+<div>
+    <form asp-action="Edit" asp-controller="Page" method="post">
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="Name">Page Name</label>
+                <input name="Name" type="text" class="form-control" id="Name" value="@ViewBag.Page.Name"/>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary float-end">Submit</button>
+            </div>
+        </div>
+        <input type="hidden" name="UserID" value="@ViewBag.Page.UserID" />
+        <input type="hidden" name="Id" value="@ViewBag.Page.Id" />
+    </form>
+</div>
