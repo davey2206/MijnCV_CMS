@@ -10,14 +10,19 @@ namespace MijnCV_CMS.Controllers
         public async Task<IActionResult> Index()
         {
             List<Page> pages = new List<Page>();
-            using (var httpClient = new HttpClient())
+            try
             {
-                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages"))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
-                }
+                var httpClient = new HttpClient();
+                var response = await httpClient.GetAsync("https://localhost:7059/api/Pages");
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
             }
+            catch (Exception)
+            {
+                return RedirectToAction("Offline", "Error");
+            }
+
+
             ViewData["Pages"] = pages;
             return View();
         }
@@ -30,14 +35,18 @@ namespace MijnCV_CMS.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAsync([Bind("Name, UserID")] Page page)
         {
-            using (var httpClient = new HttpClient())
-            {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(page), Encoding.UTF8, "application/json");
 
-                using (var response = await httpClient.PostAsync("https://localhost:7059/api/Pages", content))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                }
+            try
+            {
+                var httpClient = new HttpClient();
+                StringContent content = new StringContent(JsonConvert.SerializeObject(page), Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync("https://localhost:7059/api/Pages", content);
+                string apiResponse = await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
 
             return RedirectToAction("Index", "Page");
@@ -46,12 +55,16 @@ namespace MijnCV_CMS.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteAsync(string Id)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
-                using (var response = await httpClient.DeleteAsync("https://localhost:7059/api/Pages/" + Id))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                }
+                var httpClient = new HttpClient();
+                var response = await httpClient.DeleteAsync("https://localhost:7059/api/Pages/" + Id);
+                string apiResponse = await response.Content.ReadAsStringAsync(); ;
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
 
             return RedirectToAction("Index", "Page");
