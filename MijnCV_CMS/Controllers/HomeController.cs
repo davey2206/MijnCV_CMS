@@ -60,6 +60,17 @@ public class HomeController : Controller
         using (var httpClient = new HttpClient())
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(section), Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync("https://localhost:7059/api/Sections", content);
+                string apiResponse = await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
 
             using (var response = await httpClient.PostAsync("https://localhost:7059/api/Sections", content))
             {
