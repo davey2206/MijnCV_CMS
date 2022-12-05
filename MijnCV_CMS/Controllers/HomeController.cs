@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MijnCV_CMS.Models;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [Authorize]
     public async Task<IActionResult> Index()
     {
         List<Section> sections = new List<Section>();
@@ -38,6 +40,7 @@ public class HomeController : Controller
         return View();
     }
 
+    [Authorize]
     public async Task<IActionResult> Add()
     {
         List<Page> pages = new List<Page>();
@@ -54,6 +57,7 @@ public class HomeController : Controller
         return View();
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> AddAsync([Bind("CV,Title,Paragraph,Image,Layout,Position,PageID")] Section section)
     {
@@ -67,6 +71,7 @@ public class HomeController : Controller
         }
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> DeleteAsync(string Id)
     {
