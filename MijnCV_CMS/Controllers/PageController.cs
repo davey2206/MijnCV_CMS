@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MijnCV_CMS.Models;
 using Newtonsoft.Json;
 using System.Text;
@@ -7,6 +8,7 @@ namespace MijnCV_CMS.Controllers
 {
     public class PageController : Controller
     {
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             List<Page> pages = new List<Page>();
@@ -27,11 +29,13 @@ namespace MijnCV_CMS.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Add()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddAsync([Bind("Name, UserID")] Page page)
         {
@@ -52,6 +56,7 @@ namespace MijnCV_CMS.Controllers
             return RedirectToAction("Index", "Page");
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> DeleteAsync(string Id)
         {
@@ -70,6 +75,7 @@ namespace MijnCV_CMS.Controllers
             return RedirectToAction("Index", "Page");
         }
 
+        [Authorize]
         public async Task<IActionResult> EditAsync(string id)
         {
             Page page = new Page();
@@ -88,6 +94,7 @@ namespace MijnCV_CMS.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> EditAsync([Bind("Id,Name,UserID")] Page page)
         {
