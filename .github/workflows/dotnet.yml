@@ -75,7 +75,7 @@ jobs:
         name: Check out code
 
       - name: Build and Push Docker Image
-        uses: mr-smithers-excellent/docker-build-push@v5
+        uses: mr-smithers-excellent/docker-build-push@v5 ./MijnCV_CMS/
         with:
           image: mijncv/mijncv_cms
           registry: docker.io
