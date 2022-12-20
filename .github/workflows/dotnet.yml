@@ -77,7 +77,8 @@ jobs:
       - name: Build and Push Docker Image
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
-          image: mijncv/mijncv_cms
+          image: davey2206/mijncv
+          tags: mijncv_cms
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
