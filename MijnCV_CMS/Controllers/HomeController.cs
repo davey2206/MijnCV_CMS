@@ -19,22 +19,35 @@ public class HomeController : Controller
     [Authorize]
     public async Task<IActionResult> Index()
     {
+        if (TempData.Peek("Ready") as string != "Ready")
+        {
+            return RedirectToAction("Index", "Account");
+        }
+
         List<Section> sections = new List<Section>();
         List<Page> pages = new List<Page>();
-        using (var httpClient = new HttpClient())
+        try
         {
-            using (var response = await httpClient.GetAsync("https://localhost:7059/api/Sections"))
+            using (var httpClient = new HttpClient())
             {
-                string apiResponse = await response.Content.ReadAsStringAsync();
-                sections = JsonConvert.DeserializeObject<List<Section>>(apiResponse);
-            }
+                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Sections"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    sections = JsonConvert.DeserializeObject<List<Section>>(apiResponse);
+                }
 
-            using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages"))
-            {
-                string apiResponse = await response.Content.ReadAsStringAsync();
-                pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
+                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
+                }
             }
         }
+        catch (Exception)
+        {
+            return RedirectToAction("Offline", "Error");
+        }
+
         ViewData["Sections"] = sections;
         ViewData["Pages"] = pages;
         return View();
@@ -44,14 +57,22 @@ public class HomeController : Controller
     public async Task<IActionResult> Add()
     {
         List<Page> pages = new List<Page>();
-        using (var httpClient = new HttpClient())
+        try
         {
-            using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages"))
+            using (var httpClient = new HttpClient())
             {
-                string apiResponse = await response.Content.ReadAsStringAsync();
-                pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
+                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
+                }
             }
         }
+        catch (Exception)
+        {
+            return RedirectToAction("Offline", "Error");
+        }
+
         ViewData["Pages"] = pages;
 
         return View();
@@ -61,27 +82,42 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> AddAsync([Bind("CV,Title,Paragraph,Image,Layout,Position,PageID")] Section section)
     {
-        using (var httpClient = new HttpClient())
+        try
         {
-            StringContent content = new StringContent(JsonConvert.SerializeObject(section), Encoding.UTF8, "application/json");
-            var response = await httpClient.PostAsync("https://localhost:7059/api/Sections", content);
-            string apiResponse = await response.Content.ReadAsStringAsync();
-
-            return RedirectToAction("Index", "Home");
+            using (var httpClient = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(section), Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync("https://localhost:7059/api/Sections", content);
+                string apiResponse = await response.Content.ReadAsStringAsync();
+            }
         }
+        catch (Exception)
+        {
+            return RedirectToAction("Offline", "Error");
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 
     [Authorize]
     [HttpPost]
     public async Task<IActionResult> DeleteAsync(string Id)
     {
-        using (var httpClient = new HttpClient())
+        try
         {
-            using (var response = await httpClient.DeleteAsync("https://localhost:7059/api/Sections/" + Id))
+            using (var httpClient = new HttpClient())
             {
-                string apiResponse = await response.Content.ReadAsStringAsync();
+                using (var response = await httpClient.DeleteAsync("https://localhost:7059/api/Sections/" + Id))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                }
             }
         }
+        catch (Exception)
+        {
+            return RedirectToAction("Offline", "Error");
+        }
+
 
         return RedirectToAction("Index", "Home");
     }
