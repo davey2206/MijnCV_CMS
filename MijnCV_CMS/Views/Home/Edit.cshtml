@@ -22,8 +22,11 @@
         </div>
         <div class="row mt-3">
             <div class="form-group col-md-6">
-                <label for="position">Position on page</label>
-                <input name="Position" type="number" class="form-control" id="position" value="@ViewBag.section.Position"/>
+                <label for="layout">Layout</label>
+                <select name="Layout" id="layout" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
             </div>
             <div class="col-md-6">
                 <label for="Page">Page</label>
@@ -38,7 +41,7 @@
         <div>
             <button type="submit" class="btn btn-primary float-end">Submit</button>
         </div>
-        <input type="hidden" name="Layout" value="@ViewBag.section.Layout"/>
+        <input type="hidden" name="Position" value="@ViewBag.section.Position" />
         <input type="hidden" name="CV" value="@ViewBag.section.CV" />
         <input type="hidden" name="ID" value="@ViewBag.section.ID" />
     </form>

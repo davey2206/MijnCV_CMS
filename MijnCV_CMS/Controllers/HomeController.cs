@@ -30,13 +30,14 @@ public class HomeController : Controller
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Sections"))
+                string name = User.Identity.Name;
+                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Sections/CV/" + name))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     sections = JsonConvert.DeserializeObject<List<Section>>(apiResponse);
                 }
 
-                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages"))
+                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages/CV/" + name))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
@@ -61,7 +62,8 @@ public class HomeController : Controller
         {
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages"))
+                string name = User.Identity.Name;
+                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages/CV/" + name))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);

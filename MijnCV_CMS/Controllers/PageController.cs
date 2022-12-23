@@ -14,8 +14,9 @@ namespace MijnCV_CMS.Controllers
             List<Page> pages = new List<Page>();
             try
             {
+                string name = User.Identity.Name;
                 var httpClient = new HttpClient();
-                var response = await httpClient.GetAsync("https://localhost:7059/api/Pages");
+                var response = await httpClient.GetAsync("https://localhost:7059/api/Pages/CV/" + name);
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
             }
@@ -37,7 +38,7 @@ namespace MijnCV_CMS.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddAsync([Bind("Name, UserID")] Page page)
+        public async Task<IActionResult> AddAsync([Bind("Name, CV")] Page page)
         {
 
             try
@@ -96,7 +97,7 @@ namespace MijnCV_CMS.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> EditAsync([Bind("Id,Name,UserID")] Page page)
+        public async Task<IActionResult> EditAsync([Bind("Id,Name,CV")] Page page)
         {
             try
             {
