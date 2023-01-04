@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using MijnCV_CMS.Models;
 using Newtonsoft.Json;
+using System.Net.Http;
 using System.Text;
+using System.Xml.Linq;
 
 namespace MijnCV_CMS.Controllers
 {
@@ -16,8 +18,13 @@ namespace MijnCV_CMS.Controllers
             {
                 string name = User.Identity.Name;
                 var httpClient = new HttpClient();
-                var response = await httpClient.GetAsync("https://localhost:7059/api/Pages/CV/" + name);
+                var response = await httpClient.GetAsync("https://localhost:7236/api/Users");
                 string apiResponse = await response.Content.ReadAsStringAsync();
+                var user = JsonConvert.DeserializeObject<List<User>>(apiResponse);
+                string cvName = user.Where(u => u.Email == name).First().CV;
+
+                response = await httpClient.GetAsync("https://localhost:7059/api/Pages/CV/" + cvName);
+                apiResponse = await response.Content.ReadAsStringAsync();
                 pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
             }
             catch (Exception)
@@ -31,14 +38,30 @@ namespace MijnCV_CMS.Controllers
         }
 
         [Authorize]
-        public IActionResult Add()
+        public async Task<IActionResult> AddAsync()
         {
+            string cvName;
+            try
+            {
+                string name = User.Identity.Name;
+                var httpClient = new HttpClient();
+                var response = await httpClient.GetAsync("https://localhost:7236/api/Users");
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                var user = JsonConvert.DeserializeObject<List<User>>(apiResponse);
+                cvName = user.Where(u => u.Email == name).First().CV;
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Offline", "Error");
+            }
+
+            ViewData["CV"] = cvName;
             return View();
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddAsync([Bind("Name, CV")] Page page)
+        public async Task<IActionResult> AddAsync([Bind("Name, cv")] Page page)
         {
 
             try

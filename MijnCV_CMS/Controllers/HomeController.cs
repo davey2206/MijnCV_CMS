@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MijnCV_CMS.Models;
@@ -19,25 +20,35 @@ public class HomeController : Controller
     [Authorize]
     public async Task<IActionResult> Index()
     {
+
         if (TempData.Peek("Ready") as string != "Ready")
         {
             return RedirectToAction("Index", "Account");
         }
+        TempData.Keep();
 
         List<Section> sections = new List<Section>();
         List<Page> pages = new List<Page>();
+        string cvName = "";
         try
         {
             using (var httpClient = new HttpClient())
             {
                 string name = User.Identity.Name;
-                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Sections/CV/" + name))
+                using (var response = await httpClient.GetAsync("https://localhost:7236/api/Users"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    var user = JsonConvert.DeserializeObject<List<User>>(apiResponse);
+                    cvName = user.Where(u => u.Email == name).First().CV;
+                }
+
+                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Sections/CV/" + cvName))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     sections = JsonConvert.DeserializeObject<List<Section>>(apiResponse);
                 }
 
-                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages/CV/" + name))
+                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages/CV/" + cvName))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
@@ -58,12 +69,20 @@ public class HomeController : Controller
     public async Task<IActionResult> Add()
     {
         List<Page> pages = new List<Page>();
+        string cvName = "";
         try
         {
             using (var httpClient = new HttpClient())
             {
                 string name = User.Identity.Name;
-                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages/CV/" + name))
+                using (var response = await httpClient.GetAsync("https://localhost:7236/api/Users"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    var user = JsonConvert.DeserializeObject<List<User>>(apiResponse);
+                    cvName = user.Where(u => u.Email == name).First().CV;
+                }
+
+                using (var response = await httpClient.GetAsync("https://localhost:7059/api/Pages/CV/" + cvName))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     pages = JsonConvert.DeserializeObject<List<Page>>(apiResponse);
@@ -76,6 +95,7 @@ public class HomeController : Controller
         }
 
         ViewData["Pages"] = pages;
+        ViewData["CV"] = cvName;
 
         return View();
     }
