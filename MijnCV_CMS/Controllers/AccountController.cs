@@ -5,11 +5,14 @@ using Newtonsoft.Json;
 using NuGet.Protocol;
 using static System.Collections.Specialized.BitVector32;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace MijnCV_CMS.Controllers
 {
     public class AccountController : Controller
     {
+        public const string SessionKeyReady = "_Ready";
+
         [Authorize]
         public async Task<IActionResult> IndexAsync()
         {
@@ -30,10 +33,11 @@ namespace MijnCV_CMS.Controllers
 
             if (users.Any(u => u.Email == user))
             {
-                TempData["Ready"] = "Ready";
+                HttpContext.Session.SetInt32(SessionKeyReady, 1);
                 return RedirectToAction("Index", "Home");
             }
-
+            HttpContext.Session.Remove(SessionKeyReady);
+            HttpContext.Session.Clear();
             return View();
         }
 
@@ -52,7 +56,7 @@ namespace MijnCV_CMS.Controllers
                 return RedirectToAction("Offline", "Error");
             }
 
-            TempData["Ready"] = "Ready";
+            HttpContext.Session.SetInt32(SessionKeyReady, 1);
             return RedirectToAction("Index", "Home");
         }
     }

@@ -20,15 +20,17 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                         @if (TempData.Peek("Ready") as string == "Ready")
+                        @if (Context.Session.GetInt32("_Ready") == 1)
                          {
-                             
                             <li class="nav-item">
                                 <a id="nav-link" class="nav-link" asp-controller="home" asp-action="Index">Sections</a>
                             </li>
                             <li class="nav-item">
                                 <a id="nav-link" class="nav-link" asp-controller="page" asp-action="Index">Pages</a>
-                            </li>                                                  
+                            </li>
+                            <li class="nav-item">
+                                <a id="nav-link" class="nav-link" asp-controller="stats" asp-action="Index">Statistics</a>
+                            </li>
                         }
                     </ul>
                     <partial name="_LoginPartial" />

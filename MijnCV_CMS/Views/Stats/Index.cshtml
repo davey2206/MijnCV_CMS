@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Statistics page";
+}
+
+<div class="mb-2 d-flex justify-content-between">
+    <h1>Statistics</h1>
+</div>
+<div>
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th>Statistic</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < 1; i++) // up for loop if you add new Statistic
+            {
+                 <tr>
+                    <td>Views</td>
+                    <td>@ViewBag.Views</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

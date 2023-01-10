@@ -21,11 +21,10 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
 
-        if (TempData.Peek("Ready") as string != "Ready")
+        if (HttpContext.Session.GetInt32("_Ready") != 1)
         {
             return RedirectToAction("Index", "Account");
         }
-        TempData.Keep();
 
         List<Section> sections = new List<Section>();
         List<Page> pages = new List<Page>();
